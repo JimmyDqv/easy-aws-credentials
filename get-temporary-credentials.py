@@ -127,11 +127,11 @@ def print_env_variables(credentials):
     print("AWS_SESSION_TOKEN={}".format(credentials['SessionToken']))
 
 
-def get_value(item, key):
+def get_value(item, key, default=None):
     for (item_key, item_val) in item:
         if item_key == key:
             return item_val
-    return None
+    return default
 
 
 def get_config_file():
