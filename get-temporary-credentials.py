@@ -6,6 +6,8 @@ import argparse
 from os.path import expanduser
 from datetime import datetime
 
+DEFAULT_SESSION_DURATION = 3600
+
 
 def get_credentials(profile, output_profile, mfa_token):
     try:
@@ -17,7 +19,8 @@ def get_credentials(profile, output_profile, mfa_token):
         credential_source = get_value(config, "credential_source")
         role_session_name = get_value(config, "role_session_name")
         external_id = get_value(config, "external_id")
-        duration_seconds = int(get_value(config, "duration_seconds"))
+        duration_seconds = int(
+            get_value(config, "duration_seconds", DEFAULT_SESSION_DURATION))
 
         if role_arn:
             assume_role(profile, output_profile, role_arn, role_session_name,
@@ -59,7 +62,7 @@ def assume_role(profile, output_profile, role_arn, session_name, mfa_serial, ext
     if role_duration:
         kwargs['DurationSeconds'] = role_duration
     else:
-        kwargs['DurationSeconds'] = 3600
+        kwargs['DurationSeconds'] = DEFAULT_SESSION_DURATION
 
     assumed_role = sts_client.assume_role(**kwargs)
 
